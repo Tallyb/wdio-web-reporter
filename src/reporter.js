@@ -42,12 +42,10 @@ class WebReporter extends events.EventEmitter {
         })
 
         this.on('test:pass', function (test) {
-            console.log('TEST', test.parent, test.specHash, test.uid, test.title);
             this.results[test.specHash].passed++;
         })
 
         this.on('test:fail', function (test) {
-            console.log('TEST', test.parent, test.specHash, test.uid, test.title, test.err);
             this.results[test.specHash].failed++;
             this.results[test.specHash].failures.push({
                 title: test.title,
@@ -62,9 +60,15 @@ class WebReporter extends events.EventEmitter {
         })
 
         this.on('end', function () {
+            let environment = {};
+            this.options.environment.forEach(i => {
+                environment[i] = process.env[i]; 
+             });
             if (this.options.url) {
                 console.log('POSTING TO ', this.options.url)                 
-                request('POST',this.options.url, {json: this.results});
+                request('POST',this.options.url, {json: {
+                    results: this.results, environment
+                }});
             }
             console.dir(this.results)
         })
