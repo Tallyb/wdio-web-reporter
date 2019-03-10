@@ -1,22 +1,23 @@
-WDIO Spec Reporter
+WDIO web Reporter
 ==================
 
-[![Build Status](https://travis-ci.org/webdriverio/wdio-spec-reporter.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-spec-reporter) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-spec-reporter/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-spec-reporter) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-spec-reporter/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-spec-reporter/coverage) [![dependencies Status](https://david-dm.org/webdriverio/wdio-spec-reporter/status.svg)](https://david-dm.org/webdriverio/wdio-spec-reporter)
+[![Build Status](https://travis-ci.org/webdriverio/wdio-web-reporter.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-web-reporter) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-web-reporter/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-web-reporter) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-web-reporter/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-web-reporter/coverage) [![dependencies Status](https://tallyb.org/webdriverio/wdio-web-reporter/status.svg)](https://david-dm.org/webdriverio/wdio-web-reporter)
 
 ***
 
-> A WebdriverIO plugin to report in spec style.
+> A WebdriverIO plugin to send webhook with condensed tests results and environment information.
+> For each suite (or feature in cucumber), the total number of failed tests, skipped tests and passed tests are sent). In addition, environment variables are sent which is useful for reporting on CI processes, such as run number or execution environment. 
 
-![Spec Reporter](http://webdriver.io/images/spec.png "Spec Reporter")
+![web Reporter](http://webdriver.io/images/web.png "web Reporter")
 
 ## Installation
 
-The easiest way is to keep `wdio-spec-reporter` as a devDependency in your `package.json`.
+The easiest way is to keep `wdio-web-reporter` as a devDependency in your `package.json`.
 
 ```json
 {
   "devDependencies": {
-    "wdio-spec-reporter": "~0.1.0"
+    "wdio-web-reporter": "~0.1.0"
   }
 }
 ```
@@ -24,24 +25,28 @@ The easiest way is to keep `wdio-spec-reporter` as a devDependency in your `pack
 You can simple do it by:
 
 ```bash
-npm install wdio-spec-reporter --save-dev
+npm install wdio-web-reporter --save-dev
 ```
 
 Instructions on how to install `WebdriverIO` can be found [here](http://webdriver.io/guide/getstarted/install.html).
 
 ## Configuration
 
-Following code shows the default wdio test runner configuration. Just add `'spec'` as reporter
+Following code shows the default wdio test runner configuration. Just add `'web'` as reporter
 to the array.
 
 ```js
 // wdio.conf.js
 module.exports = {
   // ...
-  reporters: ['dot', 'spec'],
+  reporters: ['dot', 'web'],
   // ...
 };
 ```
+
+The following options exist: 
+- `url`: The webhook url to where results will be published
+- `environment`: An array of environmet variables from the execution environment to be sent to the webhook together with the results
 
 ## Development
 
