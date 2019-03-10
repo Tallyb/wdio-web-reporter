@@ -10,7 +10,10 @@
     "test:only": "jest",
     "test": "run-s lint test:only",
     "test:watch": "jest --watch",
-    "lint": "eslint src tests"
+    "lint": "eslint src tests",
+    "release:patch": "np patch",
+    "release:minor": "np minor",
+    "release:major": "np major"
   },
   "repository": {
     "type": "git",
@@ -52,6 +55,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^3.0.0",
     "jest": "^24.3.1",
+    "np": "^4.0.2",
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.6.3"
   },
