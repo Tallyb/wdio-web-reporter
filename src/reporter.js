@@ -1,31 +1,23 @@
-const events = require('events');
-const request = require('sync-request');
+import { EventEmitter } from 'events';
+import request from 'sync-request';
 
-/**
- * Initialize a new `web` test reporter.
- *
- * @param {Runner} runner
- * @api public
- */
-class WebReporter extends events.EventEmitter {
+class WebReporter extends EventEmitter {
     constructor (baseReporter, config, options = {}) {
-        super()
+        super();
+        this.baseReporter = baseReporter;
+        this.config = config;
+        this.options = options || {};
+        this.environment = this.options.environment || [];
 
-        this.baseReporter = baseReporter
-        this.config = config
-        this.options = options
-        console.log('OPTIONS', options)
-
-        this.runner = {}
+        this.runner = {};
         this.results = {
-        }
+        };
 
         this.on('runner:start', function (runner) {
-            this.runner = runner
-        })
+            this.runner = runner;
+        });
 
         this.on('suite:start', function (suite) {
-            console.log('SUITE START', suite.specHash, suite.uid, suite.parent);
             if (suite.parent === null) { // it's a feature
                 this.results[suite.specHash] = {
                     title: suite.title,
@@ -33,17 +25,17 @@ class WebReporter extends events.EventEmitter {
                     skipped: 0,
                     passed:0,
                     failures: []
-                }    
+                };    
             }
-        })
+        });
 
         this.on('test:pending', function (test) {
             this.results[test.specHash].skipped++;
-        })
+        });
 
         this.on('test:pass', function (test) {
             this.results[test.specHash].passed++;
-        })
+        });
 
         this.on('test:fail', function (test) {
             this.results[test.specHash].failed++;
@@ -51,27 +43,26 @@ class WebReporter extends events.EventEmitter {
                 title: test.title,
                 error: test.err.message
             });
-        })
+        });
 
-        this.on('suite:end', function (suite) {
-        })
+        this.on('suite:end', function () {
+        });
 
-        this.on('runner:end', function (runner) {
-        })
+        this.on('runner:end', function () {
+        });
 
         this.on('end', function () {
             let environment = {};
-            this.options.environment.forEach(i => {
+            this.environment.forEach(i => {
                 environment[i] = process.env[i]; 
-             });
+            });
             if (this.options.url) {
-                console.log('POSTING TO ', this.options.url)                 
                 request('POST',this.options.url, {json: {
                     results: this.results, environment
                 }});
             }
-            console.dir(this.results)
-        })
+            console.log(this.results); // eslint-disable-line no-console
+        });
     }
 }
 

@@ -3,23 +3,22 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-const events = require('events');
-const request = require('sync-request');
 
-/**
- * Initialize a new `web` test reporter.
- *
- * @param {Runner} runner
- * @api public
- */
-class WebReporter extends events.EventEmitter {
+var _events = require('events');
+
+var _syncRequest = require('sync-request');
+
+var request = _interopRequireWildcard(_syncRequest);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+class WebReporter extends _events.EventEmitter {
     constructor(baseReporter, config, options = {}) {
         super();
 
         this.baseReporter = baseReporter;
         this.config = config;
         this.options = options;
-        console.log('OPTIONS', options);
 
         this.runner = {};
         this.results = {};
@@ -29,7 +28,7 @@ class WebReporter extends events.EventEmitter {
         });
 
         this.on('suite:start', function (suite) {
-            console.log('SUITE START', suite.specHash, suite.uid, suite.parent);
+            console.log('SUITE START', suite);
             if (suite.parent === null) {
                 // it's a feature
                 this.results[suite.specHash] = {
@@ -47,10 +46,12 @@ class WebReporter extends events.EventEmitter {
         });
 
         this.on('test:pass', function (test) {
+            console.log('TEST:PASS', test);
             this.results[test.specHash].passed++;
         });
 
         this.on('test:fail', function (test) {
+            console.log('TEST:FAIL', test);
             this.results[test.specHash].failed++;
             this.results[test.specHash].failures.push({
                 title: test.title,
@@ -58,9 +59,11 @@ class WebReporter extends events.EventEmitter {
             });
         });
 
-        this.on('suite:end', function (suite) {});
+        this.on('suite:end', function (suite) {
+            console.log('SUITE END', suite);
+        });
 
-        this.on('runner:end', function (runner) {});
+        this.on('runner:end', function () {});
 
         this.on('end', function () {
             let environment = {};
@@ -68,12 +71,11 @@ class WebReporter extends events.EventEmitter {
                 environment[i] = process.env[i];
             });
             if (this.options.url) {
-                console.log('POSTING TO ', this.options.url);
                 request('POST', this.options.url, { json: {
                         results: this.results, environment
                     } });
             }
-            console.dir(this.results);
+            console.dir(this.results, { colors: true, depth: 10 });
         });
     }
 }

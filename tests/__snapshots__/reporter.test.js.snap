@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`webhook-reporter should emit results 1`] = `
+Array [
+  "POST",
+  "dummy",
+  Object {
+    "json": Object {
+      "environment": Object {},
+      "results": Object {
+        "a6c6e5d30799348316f0995d2b867b7b": Object {
+          "failed": 1,
+          "failures": Array [
+            Object {
+              "error": "it failed",
+              "title": "Following locations exist: \\"Chandelier, La Fayette\\"",
+            },
+          ],
+          "passed": 2,
+          "skipped": 1,
+          "title": "Test feature",
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`webhook-reporter should send environment variables 1`] = `
+Array [
+  "POST",
+  "https://dummy.com",
+  Object {
+    "json": Object {
+      "environment": Object {
+        "DUMMY": "MY_TEST_DUMMY",
+      },
+      "results": Object {},
+    },
+  },
+]
+`;
