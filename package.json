@@ -13,9 +13,9 @@
     "test:watch": "jest --watch",
     "lint": "eslint src tests",
     "prerelease:*": "npm run build",
-    "release:patch": "np patch --yolo --no-yarn",
-    "release:minor": "np minor --yolo --no-yarn",
-    "release:major": "np major --yolo --no-yarn"
+    "release:patch": "np patch --no-yarn",
+    "release:minor": "np minor --no-yarn",
+    "release:major": "np major --no-yarn"
   },
   "repository": {
     "type": "git",
